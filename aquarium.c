@@ -20,19 +20,19 @@ char remplissage_auto = 1;
 remplissage_states remplissage_state;
 vidage_states vidage_state;
 
-#ifdef	TEST
-	int cycle = 0;
-
 void init_aquarium_state(void)
 {
     remplissage_state = INIT_REMPLISSAGE;
     vidage_state = INIT_VIDAGE;
 }
+
+#ifdef	TEST
+	int cycle = 0;
 	
 void add_cycle (void){
 	if(cycle == 1)		capteur_niveau_vide=0;
-	if(cycle == 10)	capteur_niveau_eau_osmosee=1;
-	if(cycle == 30)	capteur_niveau_plein=1;
+	if(cycle == 10)		capteur_niveau_eau_osmosee=1;
+	if(cycle == 30)		capteur_niveau_plein=1;
 	if(cycle == 300)	return -1;
 	cycle_remplissage();
 	cycle_vidage();

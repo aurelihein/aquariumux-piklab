@@ -1,3 +1,17 @@
+#piklab project management
+*.adb
+*.asm
+*.p
+*.lst
+*.cod
+*.cof
+*.hex
+*.lst
+*.map
+
+#linux gedit problems
+*~
+
 # Compiled Object files
 *.slo
 *.lo
