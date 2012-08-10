@@ -40,7 +40,7 @@ void set_prise_electrique_eau_source(char state);
 void set_prise_electrique_vidage(char state);
 
 void init_aquarium_state(void);
-void add_cycle (void);
+void test_add_cycle (void);
 int cycle_vidage(void);
 int cycle_remplissage(void);
 void incremente_tempo(void);

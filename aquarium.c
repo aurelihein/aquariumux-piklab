@@ -1,18 +1,18 @@
 #include "aquarium.h"
 
 #include "serial.h"
-#include "stdio.h"
+#include <stdio.h>
 
 #define printf	serial_puts
 
 //entrees
-char capteur_niveau_vide = 1;
-char capteur_niveau_eau_osmosee = 0;
-char capteur_niveau_plein = 0;
+volatile char capteur_niveau_vide = 1;
+volatile char capteur_niveau_eau_osmosee = 0;
+volatile char capteur_niveau_plein = 0;
 
 //sorties
-int tempo_allumage_vidage = 0;
-int tempo_attente_entre_vidage = 0;
+volatile int tempo_allumage_vidage = 0;
+volatile int tempo_attente_entre_vidage = 0;
 
 //1 remplissage automatique activée
 char remplissage_auto = 1;
@@ -26,19 +26,23 @@ void init_aquarium_state(void)
     vidage_state = INIT_VIDAGE;
 }
 
-#ifdef	TEST
-	int cycle = 0;
-	
-void add_cycle (void){
-	if(cycle == 1)		capteur_niveau_vide=0;
-	if(cycle == 10)		capteur_niveau_eau_osmosee=1;
-	if(cycle == 30)		capteur_niveau_plein=1;
-	if(cycle == 300)	return -1;
-	cycle_remplissage();
-	cycle_vidage();
-	incremente_tempo();
+int cycle = 0;
+void test_add_cycle (void){
+	if(cycle == 1){
+	      capteur_niveau_vide=0;
+	      printf("TEST set capteur_niveau_vide=0\r\n");
+	}
+	if(cycle == 10){
+	      capteur_niveau_eau_osmosee=1;
+	      printf("TEST set capteur_niveau_eau_osmosee=1\r\n");
+	      
+	}
+	if(cycle == 30){
+	      capteur_niveau_plein=1;
+	      printf("TEST set capteur_niveau_plein\r\n");
+	}
+	cycle++;
 }
-#endif
 
 void printf_remplissage_state(remplissage_states s){
 	switch(s)
@@ -123,8 +127,15 @@ void set_prise_electrique_vidage(char state){
 void incremente_tempo(void){
 	tempo_allumage_vidage++;
 	tempo_attente_entre_vidage++;
+#if 0
+	{
+	      char buffer[255];
+	      sprintf(buffer,"tempo_allumage_vidage:%d, tempo_attente_entre_vidage:%d\r\n",tempo_allumage_vidage,tempo_attente_entre_vidage);
+	      printf(buffer);
+	}
+#else
 	printf("TICK\r\n");
-	//printf("tempo_allumage_vidage:%d, tempo_attente_entre_vidage:%d\n",tempo_allumage_vidage,tempo_attente_entre_vidage);
+#endif
 }
 
 void update_output_cycle_remplissage(void){
